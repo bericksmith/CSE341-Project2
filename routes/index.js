@@ -1,7 +1,9 @@
 const router = require('express').Router();
 
+router.use('/', require('./swagger'));
+
 router.get('/', (req, res) => {
-    //#swagger.tags=['Hello World']
+    //#swagger.tags=['Project 2 Running']
     res.send('CSE341 - Project 2 is running.');
 });
 

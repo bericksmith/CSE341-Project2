@@ -5,7 +5,7 @@ const mongodb = require('./data/database');
 const app = express();
 
 // Port Number
-const port = process.env.PORT ||5000;
+const port = process.env.PORT ||5500;
 
 app.use(bodyParser.json());
 app.use((req, res, next) => {
