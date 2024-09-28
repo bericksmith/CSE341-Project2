@@ -1,10 +1,8 @@
-// Requiring module
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongodb = require('./data/database');
 const app = express();
 
-// Port Number
 const port = process.env.PORT ||5500;
 
 app.use(bodyParser.json());
@@ -19,6 +17,10 @@ app.use((req, res, next) => {
 });
 
 app.use('/', require('./routes'));
+
+process.on('uncaughtException', (err,origin) => {
+    console.log(process.stderr.fd, `Caught exception: ${err}\n` + `Exception origin: ${origin}`);
+});
 
 mongodb.initDb((err) => {
     if(err) {

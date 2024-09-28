@@ -1,6 +1,6 @@
 const express = require('express');
+const { body, param, validationResult } = require('express-validator');
 const router = express.Router();
-
 const productsController = require('../controllers/products');
 
 router.get('/', productsController.getAll);
