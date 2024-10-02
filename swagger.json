@@ -1,11 +1,11 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Project 2 Api CSE 341 ",
-    "description": "Project 2 Api",
+    "title": "Project 2 API CSE 341",
+    "description": "API for managing users and products",
     "version": "1.0.0"
   },
-  "host": "https://cse341-project2-dcl4.onrender.com",
+  "host": "cse341-project2-dcl4.onrender.com",
   "basePath": "/",
   "schemes": [
     "https"
@@ -14,9 +14,22 @@
     "/": {
       "get": {
         "tags": [
-          "Project 2 Running"
+          "General"
         ],
-        "description": "",
+        "summary": "Project status",
+        "description": "Check if the API is running",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api-docs": {
+      "get": {
+        "tags": ["Documentation"],
+        "summary": "API documentation",
+        "description": "Access API documentation",
         "responses": {
           "200": {
             "description": "OK"
@@ -26,128 +39,111 @@
     },
     "/users/": {
       "get": {
-        "tags": [
-          "Users Get All"
-        ],
-        "description": "",
+        "tags": ["Users"],
+        "summary": "Get all users",
+        "description": "Retrieve a list of all users",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Successful operation"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
       "post": {
-        "tags": [
-          "Users Create New"
-        ],
-        "description": "",
+        "tags": ["Users"],
+        "summary": "Create a new user",
+        "description": "Create a new user by providing required information",
         "parameters": [
           {
-            "name": "body",
             "in": "body",
+            "name": "body",
+            "description": "User object that needs to be added",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "role": {
-                  "example": "any"
-                },
-                "status": {
-                  "example": "any"
-                },
-                "dob": {
-                  "example": "any"
-                },
-                "location": {
-                  "example": "any"
-                }
+                "name": { "type": "string", "example": "John Doe" },
+                "email": { "type": "string", "example": "john.doe@example.com" },
+                "password": { "type": "string", "example": "password123" },
+                "role": { "type": "string", "example": "user" },
+                "status": { "type": "string", "example": "active" },
+                "dob": { "type": "string", "format": "date", "example": "1990-01-01" },
+                "location": { "type": "string", "example": "New York" }
               }
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Invalid input"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error"
           }
         }
       }
     },
     "/users/{id}": {
       "get": {
-        "tags": [
-          "Users Get Single"
-        ],
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
+        "tags": ["Users"],
+        "summary": "Get user by ID",
+        "description": "Retrieve a user by their ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "User ID"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User found"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
       "put": {
-        "tags": [
-          "Users Update"
-        ],
-        "description": "",
+        "tags": ["Users"],
+        "summary": "Update user by ID",
+        "description": "Update user information",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "User ID"
           },
           {
-            "name": "body",
             "in": "body",
+            "name": "body",
+            "description": "User object with updated information",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "role": {
-                  "example": "any"
-                },
-                "status": {
-                  "example": "any"
-                },
-                "dob": {
-                  "example": "any"
-                },
-                "location": {
-                  "example": "any"
-                }
+                "name": { "type": "string", "example": "Jane Doe" },
+                "email": { "type": "string", "example": "jane.doe@example.com" },
+                "password": { "type": "string", "example": "newpassword123" },
+                "role": { "type": "string", "example": "admin" },
+                "status": { "type": "string", "example": "inactive" },
+                "dob": { "type": "string", "format": "date", "example": "1992-01-01" },
+                "location": { "type": "string", "example": "Los Angeles" }
               }
             }
           }
@@ -156,194 +152,152 @@
           "204": {
             "description": "No Content"
           },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "User not found"
+          },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error"
           }
         }
       },
       "delete": {
-        "tags": [
-          "Users Delete"
-        ],
-        "description": "",
+        "tags": ["Users"],
+        "summary": "Delete user by ID",
+        "description": "Delete a user by their ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "role": {
-                  "example": "any"
-                },
-                "status": {
-                  "example": "any"
-                },
-                "dob": {
-                  "example": "any"
-                },
-                "location": {
-                  "example": "any"
-                }
-              }
-            }
+            "type": "string",
+            "description": "User ID"
           }
         ],
         "responses": {
           "204": {
             "description": "No Content"
           },
+          "404": {
+            "description": "User not found"
+          },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error"
           }
         }
       }
     },
     "/products/": {
       "get": {
-        "tags": [
-          "Products Get All"
-        ],
-        "description": "",
+        "tags": ["Products"],
+        "summary": "Get all products",
+        "description": "Retrieve a list of all products",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Successful operation"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
       "post": {
-        "tags": [
-          "Products Create New"
-        ],
-        "description": "",
+        "tags": ["Products"],
+        "summary": "Create a new product",
+        "description": "Create a new product by providing necessary details",
         "parameters": [
           {
-            "name": "body",
             "in": "body",
+            "name": "body",
+            "description": "Product object that needs to be added",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "category": {
-                  "example": "any"
-                },
-                "stock": {
-                  "example": "any"
-                },
-                "added": {
-                  "example": "any"
-                },
-                "updated": {
-                  "example": "any"
-                },
-                "location": {
-                  "example": "any"
-                }
+                "name": { "type": "string", "example": "Laptop" },
+                "description": { "type": "string", "example": "High-end gaming laptop" },
+                "price": { "type": "number", "example": 1500.99 },
+                "category": { "type": "string", "example": "Electronics" },
+                "stock": { "type": "integer", "example": 100 },
+                "added": { "type": "string", "format": "date", "example": "2024-01-01" },
+                "updated": { "type": "string", "format": "date", "example": "2024-02-01" },
+                "location": { "type": "string", "example": "Warehouse 5" }
               }
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "201": {
+            "description": "Product created successfully"
+          },
+          "400": {
+            "description": "Invalid input"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error"
           }
         }
       }
     },
     "/products/{id}": {
       "get": {
-        "tags": [
-          "Products Get Single"
-        ],
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
+        "tags": ["Products"],
+        "summary": "Get product by ID",
+        "description": "Retrieve a product by its ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Product ID"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Product found"
+          },
+          "404": {
+            "description": "Product not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
       "put": {
-        "tags": [
-          "Products Update"
-        ],
-        "description": "",
+        "tags": ["Products"],
+        "summary": "Update product by ID",
+        "description": "Update product information",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Product ID"
           },
           {
-            "name": "body",
             "in": "body",
+            "name": "body",
+            "description": "Product object with updated information",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "category": {
-                  "example": "any"
-                },
-                "stock": {
-                  "example": "any"
-                },
-                "added": {
-                  "example": "any"
-                },
-                "updated": {
-                  "example": "any"
-                },
-                "location": {
-                  "example": "any"
-                }
+                "name": { "type": "string", "example": "Updated Laptop" },
+                "description": { "type": "string", "example": "New specs for the laptop" },
+                "price": { "type": "number", "example": 1700.99 },
+                "category": { "type": "string", "example": "Electronics" },
+                "stock": { "type": "integer", "example": 50 },
+                "added": { "type": "string", "format": "date", "example": "2024-01-01" },
+                "updated": { "type": "string", "format": "date", "example": "2024-03-01" },
+                "location": { "type": "string", "example": "Warehouse 7" }
               }
             }
           }
@@ -352,63 +306,39 @@
           "204": {
             "description": "No Content"
           },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Product not found"
+          },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error"
           }
         }
       },
       "delete": {
-        "tags": [
-          "Products Delete"
-        ],
-        "description": "",
+        "tags": ["Products"],
+        "summary": "Delete product by ID",
+        "description": "Delete a product by its ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "price": {
-                  "example": "any"
-                },
-                "category": {
-                  "example": "any"
-                },
-                "stock": {
-                  "example": "any"
-                },
-                "added": {
-                  "example": "any"
-                },
-                "updated": {
-                  "example": "any"
-                },
-                "location": {
-                  "example": "any"
-                }
-              }
-            }
+            "type": "string",
+            "description": "Product ID"
           }
         ],
         "responses": {
           "204": {
             "description": "No Content"
           },
+          "404": {
+            "description": "Product not found"
+          },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error"
           }
         }
       }
