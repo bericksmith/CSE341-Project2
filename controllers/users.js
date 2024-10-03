@@ -1,9 +1,6 @@
 const User = require('../models/users');
 const { validationResult } = require('express-validator');
 
-// #swagger.tags = ['Users']
-// #swagger.summary = 'Get all users'
-// #swagger.description = 'Retrieve a list of all users'
 const getAll = async (req, res) => {
     try {
         const users = await User.find();
@@ -14,10 +11,6 @@ const getAll = async (req, res) => {
     }
 };
 
-// #swagger.tags = ['Users']
-// #swagger.summary = 'Get a user by ID'
-// #swagger.description = 'Retrieve a user by their ID'
-// #swagger.parameters['id'] = { description: 'User ID', in: 'path', required: true }
 const getSingle = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -34,29 +27,6 @@ const getSingle = async (req, res) => {
     }
 };
 
-// #swagger.tags = ['Users']
-// #swagger.summary = 'Create a new user'
-// #swagger.description = 'Create a new user by providing necessary details'
-// #swagger.requestBody = {
-//   required: true,
-//   content: {
-//     'application/json': {
-//       schema: {
-//         type: 'object',
-//         properties: {
-//           name: { type: 'string', description: 'Name of the user' },
-//           email: { type: 'string', description: 'Email of the user' },
-//           password: { type: 'string', description: 'Password for the user account' },
-//           role: { type: 'string', description: 'User role' },
-//           status: { type: 'string', description: 'Status of the user' },
-//           dob: { type: 'string', format: 'date', description: 'Date of birth of the user' },
-//           location: { type: 'string', description: 'Location of the user' }
-//         },
-//         required: ['name', 'email', 'password']
-//       }
-//     }
-//   }
-// }
 const createUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -82,30 +52,6 @@ const createUser = async (req, res) => {
     }
 };
 
-// #swagger.tags = ['Users']
-// #swagger.summary = 'Update a user by ID'
-// #swagger.description = 'Update user details by providing necessary information'
-// #swagger.parameters['id'] = { description: 'User ID', in: 'path', required: true }
-// #swagger.requestBody = {
-//   required: true,
-//   content: {
-//     'application/json': {
-//       schema: {
-//         type: 'object',
-//         properties: {
-//           name: { type: 'string', description: 'Updated name of the user' },
-//           email: { type: 'string', description: 'Updated email of the user' },
-//           password: { type: 'string', description: 'Updated password of the user' },
-//           role: { type: 'string', description: 'Updated role of the user' },
-//           status: { type: 'string', description: 'Updated status of the user' },
-//           dob: { type: 'string', format: 'date', description: 'Updated date of birth of the user' },
-//           location: { type: 'string', description: 'Updated location of the user' }
-//         },
-//         required: ['name', 'email']
-//       }
-//     }
-//   }
-// }
 const updateUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -128,16 +74,12 @@ const updateUser = async (req, res) => {
             return res.status(404).json({ message: 'User not found or no changes made' });
         }
 
-        res.status(204).json({ message: 'User updated successfully' });
+        res.status(204).json({ message: 'User updated successfully', user: updatedUser });
     } catch (error) {
         res.status(500).json({ message: 'Failed to update user', error: error.message });
     }
 };
 
-// #swagger.tags = ['Users']
-// #swagger.summary = 'Delete a user by ID'
-// #swagger.description = 'Delete a user by their ID'
-// #swagger.parameters['id'] = { description: 'User ID', in: 'path', required: true }
 const deleteUser = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -147,7 +89,7 @@ const deleteUser = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.status(204).json({ message: 'User deleted successfully' });
+        res.status(204).json({ message: 'User deleted successfully', user: deletedUser });
     } catch (error) {
         res.status(500).json({ message: 'Failed to delete user', error: error.message });
     }

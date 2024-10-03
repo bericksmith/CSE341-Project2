@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const db = require('./models'); // Import the db from models/index.js
+const db = require('./models'); 
 const app = express();
 
 const port = process.env.PORT || 5500;
@@ -22,12 +22,7 @@ process.on('uncaughtException', (err, origin) => {
     console.log(process.stderr.fd, `Caught exception: ${err}\n` + `Exception origin: ${origin}`);
 });
 
-// Use Mongoose to connect to MongoDB
-db.mongoose.connect(db.url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-
+db.mongoose.connect(db.url)
 
 .then(() => {
     console.log('Connected to the database!');
