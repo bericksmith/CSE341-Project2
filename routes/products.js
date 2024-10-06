@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const productsController = require('../controllers/products');
 const { validateProductId, validateProduct } = require('../middleware/validators/products');
+const { isAuthenticated } = require('../middleware/authenticate');
 
 // #swagger.tags = ['Products']
 // #swagger.summary = 'Get all products'
@@ -38,7 +39,7 @@ router.get('/:id', validateProductId, productsController.getSingle);
 //     }
 //   }
 // }
-router.post('/', validateProduct, productsController.createProduct);
+router.post('/', isAuthenticated, validateProduct, productsController.createProduct);
 
 // #swagger.tags = ['Products']
 // #swagger.summary = 'Update a product by ID'
@@ -64,12 +65,12 @@ router.post('/', validateProduct, productsController.createProduct);
 //     }
 //   }
 // }
-router.put('/:id', [validateProductId, validateProduct], productsController.updateProduct);
+router.put('/:id', isAuthenticated, [validateProductId, validateProduct], productsController.updateProduct);
 
 // #swagger.tags = ['Products']
 // #swagger.summary = 'Delete a product by ID'
 // #swagger.description = 'Delete a product by its ID'
 // #swagger.parameters['id'] = { description: 'Product ID', in: 'path', required: true }
-router.delete('/:id', validateProductId, productsController.deleteProduct);
+router.delete('/:id', isAuthenticated, validateProductId, productsController.deleteProduct);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const usersController = require('../controllers/users');
 const { validateUserId, validateUser } = require('../middleware/validators/users');
+const { isAuthenticated } = require('../middleware/authenticate');
 
 // #swagger.tags = ['Users']
 // #swagger.summary = 'Get all users'
@@ -37,7 +38,7 @@ router.get('/:id', validateUserId, usersController.getSingle);
 //     }
 //   }
 // }
-router.post('/', validateUser, usersController.createUser);
+router.post('/', isAuthenticated, validateUser, usersController.createUser);
 
 // #swagger.tags = ['Users']
 // #swagger.summary = 'Update a user by ID'
@@ -63,12 +64,12 @@ router.post('/', validateUser, usersController.createUser);
 //     }
 //   }
 // }
-router.put('/:id', [validateUserId, validateUser], usersController.updateUser);
+router.put('/:id', isAuthenticated, [validateUserId, validateUser], usersController.updateUser);
 
 // #swagger.tags = ['Users']
 // #swagger.summary = 'Delete a user by ID'
 // #swagger.description = 'Delete a user by their ID'
 // #swagger.parameters['id'] = { description: 'User ID', in: 'path', required: true }
-router.delete('/:id', validateUserId, usersController.deleteUser);
+router.delete('/:id', isAuthenticated, validateUserId, usersController.deleteUser);
 
 module.exports = router;
