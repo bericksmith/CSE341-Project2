@@ -10,6 +10,18 @@
   "schemes": [
     "https"
   ],
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://github.com/login/oauth/authorize",
+      "tokenUrl": "https://github.com/login/oauth/access_token",
+      "scopes": {
+        "read": "Grants read access",
+        "write": "Grants write access"
+      }
+    }
+  },
   "paths": {
     "/": {
       "get": {
@@ -88,7 +100,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ]
       }
     },
     "/users/{id}": {
@@ -161,7 +178,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ]
       },
       "delete": {
         "tags": ["Users"],
@@ -186,7 +208,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ]
       }
     },
     "/products/": {
@@ -241,7 +268,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ]
       }
     },
     "/products/{id}": {
@@ -315,7 +347,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ]
       },
       "delete": {
         "tags": ["Products"],
@@ -340,7 +377,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ]
       }
     }
   }
