@@ -1,5 +1,6 @@
 const User = require('../models/users');
 const { validationResult } = require('express-validator');
+const bcrypt = require('bcrypt');
 
 const getAll = async (req, res) => {
     try {
@@ -34,10 +35,12 @@ const createUser = async (req, res) => {
     }
 
     try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10); // Hashing the password
+
         const newUser = new User({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
+            password: hashedPassword, // Use hashed password
             role: req.body.role,
             status: req.body.status,
             dob: req.body.dob,
@@ -60,15 +63,21 @@ const updateUser = async (req, res) => {
 
     try {
         const userId = req.params.id;
-        const updatedUser = await User.findByIdAndUpdate(userId, {
+        let updatedData = {
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
             role: req.body.role,
             status: req.body.status,
             dob: req.body.dob,
             location: req.body.location,
-        }, { new: true });
+        };
+
+        if (req.body.password) {
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            updatedData.password = hashedPassword;
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(userId, updatedData, { new: true });
 
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found or no changes made' });
@@ -95,10 +104,30 @@ const deleteUser = async (req, res) => {
     }
 };
 
+const loginUser = async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const isMatch = await bcrypt.compare(req.body.password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Incorrect password' });
+        }
+
+        // Continue with your session handling logic
+        res.status(200).json({ message: 'Logged in successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
 module.exports = {
     getAll,
     getSingle,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    loginUser
 };
