@@ -27,11 +27,6 @@
       }
     }
   },
-  "security": [
-    {
-      "OAuth2": ["write"]
-    }
-  ],
   "paths": {
     "/": {
       "get": {
@@ -78,6 +73,11 @@
         "tags": ["Users"],
         "summary": "Create a new user",
         "description": "Create a new user by providing required information",
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ],
         "requestBody": {
           "description": "User object that needs to be added",
           "required": true,
@@ -143,6 +143,11 @@
         "tags": ["Users"],
         "summary": "Update user by ID",
         "description": "Update user information",
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -193,6 +198,11 @@
         "tags": ["Users"],
         "summary": "Delete user by ID",
         "description": "Delete a user by their ID",
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -238,6 +248,11 @@
         "tags": ["Products"],
         "summary": "Create a new product",
         "description": "Create a new product by providing necessary details",
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ],
         "requestBody": {
           "description": "Product object that needs to be added",
           "required": true,
@@ -304,6 +319,11 @@
         "tags": ["Products"],
         "summary": "Update product by ID",
         "description": "Update product information",
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -355,6 +375,11 @@
         "tags": ["Products"],
         "summary": "Delete product by ID",
         "description": "Delete a product by its ID",
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ],
         "parameters": [
           {
             "name": "id",
